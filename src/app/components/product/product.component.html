@@ -1,0 +1,9 @@
+<div class="country-card">
+  <img [src]="product.flag" alt="{{ product.name }} flag" class="flag" />
+  <div class="country-info">
+    <h2>{{ product.name }}</h2>
+    <p><strong>Population:</strong> {{ product.population | number }}</p>
+    <p><strong>Region:</strong> {{ product.region }}</p>
+    <p><strong>Capital:</strong> {{ product.capital }}</p>
+  </div>
+</div>

@@ -1,0 +1,63 @@
+<div class="container">
+  <!-- If a country is selected, show its details -->
+  <div *ngIf="!selectedCountry; else countryDetails">
+    <div class="filters">
+      <div class="search-container">
+        <input type="text" placeholder="Search for a country..." [(ngModel)]="searchTerm" (input)="filterProducts()">
+      </div>
+      <div class="region-filter">
+        <select [(ngModel)]="selectedRegion" (change)="filterProducts()">
+          <option value="">Filter by Region</option>
+          <option value="Africa">Africa</option>
+          <option value="Americas">Americas</option>
+          <option value="Asia">Asia</option>
+          <option value="Europe">Europe</option>
+          <option value="Oceania">Oceania</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Display message if no countries are found -->
+    <div *ngIf="message" class="no-results-message">
+      {{ message }}
+    </div>
+
+    <div class="countries-grid">
+      <!-- Render each country card -->
+      <app-product *ngFor="let product of products" [product]="product" (click)="selectCountry(product)"></app-product>
+    </div>
+
+    <!-- Pagination logic goes here -->
+    <div class="pagination">
+      <button (click)="prevPage()" [disabled]="currentPage === 0">Previous</button>
+      
+      <span *ngFor="let page of pages" (click)="goToPage(page)" 
+            [ngClass]="{'active-page': page === currentPage}">
+        {{ page + 1 }}
+      </span>
+      
+      <button (click)="nextPage()" [disabled]="currentPage === totalPages - 1">Next</button>
+    </div>
+    
+  </div>
+
+  <!-- Country details when selected -->
+  <ng-template #countryDetails>
+    <div class="country-details">
+      <button (click)="goBack()">Back</button>
+      <img [src]="selectedCountry?.flag" alt="{{ selectedCountry?.name }}">
+      <h2>{{ selectedCountry?.name }}</h2>
+      <p><strong>Native Name:</strong> {{ selectedCountry?.nativeName }}</p>
+      <p><strong>Population:</strong> {{ selectedCountry?.population }}</p>
+      <p><strong>Region:</strong> {{ selectedCountry?.region }}</p>
+      <p><strong>Sub Region:</strong> {{ selectedCountry?.subregion }}</p>
+      <p><strong>Capital:</strong> {{ selectedCountry?.capital }}</p>
+      <p><strong>Languages:</strong> {{ selectedCountry?.languages | json }}</p>
+      <p><strong>Border Countries:</strong>
+        <span *ngFor="let border of selectedCountry?.borders">
+          {{ border }}
+        </span>
+      </p>
+    </div>
+  </ng-template>
+</div>
