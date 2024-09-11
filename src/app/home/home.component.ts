@@ -38,7 +38,7 @@ export class HomeComponent implements OnInit {
       region: this.selectedRegion || ''
     };
 
-    this.productsService.getProducts('https://countries-sever.onrender.com/', params).subscribe((response: Countries) => {
+    this.productsService.getProducts('http://localhost:4001/', params).subscribe((response: Countries) => {
       if (response.countries.length === 0) {
         this.message = 'No such country found';
         this.products = [];

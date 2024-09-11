@@ -59,7 +59,7 @@ export interface Currency {
     demonym: string;
     area: number;
     timezones: string[];
-    borders: string[];
+    borders?: string[];
     nativeName: string;
     numericCode: string;
     flags: Flag;

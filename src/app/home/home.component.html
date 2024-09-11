@@ -30,34 +30,69 @@
     <!-- Pagination logic goes here -->
     <div class="pagination">
       <button (click)="prevPage()" [disabled]="currentPage === 0">Previous</button>
-      
+
       <span *ngFor="let page of pages" (click)="goToPage(page)" 
             [ngClass]="{'active-page': page === currentPage}">
         {{ page + 1 }}
       </span>
-      
+
       <button (click)="nextPage()" [disabled]="currentPage === totalPages - 1">Next</button>
     </div>
-    
   </div>
 
   <!-- Country details when selected -->
   <ng-template #countryDetails>
     <div class="country-details">
-      <button (click)="goBack()">Back</button>
-      <img [src]="selectedCountry?.flag" alt="{{ selectedCountry?.name }}">
-      <h2>{{ selectedCountry?.name }}</h2>
-      <p><strong>Native Name:</strong> {{ selectedCountry?.nativeName }}</p>
-      <p><strong>Population:</strong> {{ selectedCountry?.population }}</p>
-      <p><strong>Region:</strong> {{ selectedCountry?.region }}</p>
-      <p><strong>Sub Region:</strong> {{ selectedCountry?.subregion }}</p>
-      <p><strong>Capital:</strong> {{ selectedCountry?.capital }}</p>
-      <p><strong>Languages:</strong> {{ selectedCountry?.languages | json }}</p>
-      <p><strong>Border Countries:</strong>
-        <span *ngFor="let border of selectedCountry?.borders">
-          {{ border }}
-        </span>
-      </p>
+      <button class="back-button" (click)="goBack()">
+        <span>&#8592;</span> Back
+      </button>
+      <div class="country-content">
+        <div class="flag-container">
+          <img [src]="selectedCountry?.flags?.svg" alt="{{ selectedCountry?.name }} flag">
+        </div>
+        <div class="country-info">
+          <h2>{{ selectedCountry?.name }}</h2>
+          <div class="info-columns">
+            <div class="left-column">
+              <p><strong>Native Name:</strong> {{ selectedCountry?.nativeName }}</p>
+              <p><strong>Population:</strong> {{ selectedCountry?.population | number }}</p>
+              <p><strong>Region:</strong> {{ selectedCountry?.region }}</p>
+              <p><strong>Sub Region:</strong> {{ selectedCountry?.subregion }}</p>
+              <p><strong>Capital:</strong> {{ selectedCountry?.capital }}</p>
+            </div>
+            <div class="right-column">
+              <p><strong>Top Level Domain:</strong> {{ selectedCountry?.topLevelDomain?.join(', ') }}</p>
+              <p><strong>Currencies:</strong></p>
+<ul>
+  <li *ngFor="let currency of selectedCountry?.currencies">
+    {{ currency.name }} ({{ currency.code }})
+  </li>
+</ul>
+
+<!-- Languages Section -->
+<p><strong>Languages:</strong></p>
+<ul>
+  <li *ngFor="let language of selectedCountry?.languages">
+    {{ language.name }} ({{ language.iso639_1 }})
+  </li>
+</ul>
+            </div>
+          </div>
+          <div class="border-countries">
+            <strong>Border Countries:</strong>
+            <div class="border-tags" *ngIf="selectedCountry && selectedCountry.borders && selectedCountry.borders.length; else noBorders">
+              <span *ngFor="let border of selectedCountry.borders" class="border-tag">
+                {{ border }}
+              </span>
+            </div>
+            <ng-template #noBorders>
+              <span> None</span>
+            </ng-template>
+          </div>
+          
+          
+        </div>
+      </div>
     </div>
   </ng-template>
 </div>
